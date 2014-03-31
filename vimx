@@ -1,0 +1,23 @@
+#!/bin/sh
+tmpfile='~/.vimxtmp'
+
+dialog --checklist "Choose Vim Settings:" 15 40 5 \
+1 "line number" on \
+2 "vi-noncompatible" on \
+2> ~/.vimxtmp
+
+if [ $? = 0 ]; then
+	rm -rf ~/.vimrc
+	for result in `cat ~/.vimxtmp`
+	do
+		case $result in
+		1)
+			echo "set number" >> ~/.vimrc;;
+		2)
+			echo "set nocompatible" >> ~/.vimrc;;
+		esac
+	done
+	rm -rf ~/.vimxtmp
+else
+	echo "canceled"
+fi
